@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luca Steffen — Intro</title>
+  
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      transition: opacity 1.4s ease, transform 1.6s ease;
+    }
+
+    #intro.exit {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+
+    spline-viewer {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .intro-cta {
+      position: absolute;
+      bottom: 9vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 4px;
+      color: #888;
+      text-align: center;
+      cursor: pointer;
+      pointer-events: auto;
+      user-select: none;
+    }
+
+    .intro-cta:hover {
+      color: #e8ff47;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 55px;
+      background: linear-gradient(to bottom, #e8ff47, transparent);
+      margin: 12px auto 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="intro">
+    <spline-viewer 
+      url="https://prod.spline.design/K16Fs-J06B0mZ2KD/scene.splinecode">
+    </spline-viewer>
+
+    <div class="intro-cta" onclick="exitIntro()">
+      <span>DÉFILER POUR ENTRER</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <script>
+    let hasExited = false;
+
+    function exitIntro() {
+      if (hasExited) return;
+      hasExited = true;
+
+      const intro = document.getElementById('intro');
+      intro.classList.add('exit');
+
+      // Redirection vers ton fichier principal après l'animation
+      setTimeout(() => {
+        window.location.href = "indextest.html?from=intro";
+      }, 1400);
+    }
+
+    // Scroll avec la molette → redirection 
+    window.addEventListener('wheel', () => {
+      if (!hasExited) exitIntro();
+    }, { once: true });
+
+    // Touche espace ou flèche bas → redirection
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === " " || e.key === "ArrowDown") && !hasExited) {
+        exitIntro();
+      }
+    });
+  </script>
+
+</body>
+</html>
