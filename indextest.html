@@ -675,6 +675,13 @@
     object-fit:contain;
     background:rgba(0,0,0,.25);
   }
+  .proj-img-caption, .proj-video-caption {
+    margin-top:.5rem;
+    font-size:.85rem;
+    line-height:1.5;
+    color:rgba(224,244,255,.75);
+    text-align:center;
+  }
   .proj-video-full {
     width:100%;
     border-radius:8px;
@@ -1024,7 +1031,7 @@
     { n: "Light", l: "0 dépendance" }
   ],
   media: [
-    { type: "image", src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80", label: "Interface console du script" }
+    { type: "image", src: "video/batch01.png", label: "Interface console du script" }
   ],
   context: "Développement d'un utilitaire système léger pour apprendre la manipulation de flux de données (I/O) et les conditions en langage de script Windows.",
   desc: `Ce projet consiste en un script Windows Batch (.bat) permettant de gérer des notes textuelles directement depuis l'invité de commande. L'objectif était de créer un outil ultra-léger, sans interface graphique, capable d'horodater et d'archiver des entrées utilisateur.\n\nLe script utilise les commandes systèmes pour structurer un menu interactif, gérer les erreurs (fichier inexistant) et assurer la persistance des données dans un fichier local .txt. C'est un excellent exemple d'automatisation de tâches de base en environnement Windows.`,
@@ -1233,7 +1240,7 @@ pause >nul
         'Mode maintenance documenté : comment désactiver temporairement l’inscription.'
       ],
        demoLinks: [
-        { href: "/projet site web-ceff/home", label: "Lien du site web fait" }
+        { href: "projet site web-ceff/home", label: "Lien du site web fait" }
       ],
       deliverables: [
         'Maquettes intégrées en HTML/CSS modulaire',
@@ -1350,7 +1357,7 @@ pause >nul
       ],
       media: [ 
         { type: "image", src: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80", label: "Schéma inspiration homelab" },
-        { type: "video", src: "video/2026-05-07-20h36m31s_seed978721212_POV cinematic high-speed flight skimming inches ab.mp4", label: "Vidéo placeholder (remplacez par démo Wan / Gradio)" },
+        { type: "video", src: "video/2026-05-07-20h36m31s_seed978721212_POV cinematic high-speed flight skimming inches ab.mp4", label: "Rendu Wan 2.1 local : Exemple de persistance visuelle. L'IA a interprété le logo Gemini de l'image source (générée par Gemini) comme un élément clé du décor, le maintenant de manière cohérente tout au long de l'animation." },
         { type: "image", src: "", label: "Photo de la tour / GPU", placeholder: true },
         { type: "video", src: "", label: "Screen capture bot + progression", placeholder: true }
       ],
@@ -1700,13 +1707,13 @@ pause >nul
     let demoShots = Array.isArray(p.demoShots) ? p.demoShots.filter(Boolean) : [];
     if(!demoShots.length && p.media){
       p.media.forEach(m=>{
-        if(m.type==='image' && m.src && String(m.src).trim()!=='' && !m.placeholder) demoShots.push(m.src);
+        if(m.type==='image' && m.src && String(m.src).trim()!=='' && !m.placeholder) demoShots.push({src: m.src, label: m.label});
       });
     }
     let demoVideo = (p.demoVideo && String(p.demoVideo).trim()) ? p.demoVideo.trim() : '';
     if(!demoVideo && p.media){
       const v = p.media.find(m=>m.type==='video' && m.src && String(m.src).trim()!=='' && !m.placeholder);
-      if(v) demoVideo = v.src;
+      if(v) demoVideo = {src: v.src, label: v.label};
     }
 
     let bilan = (p.bilan != null && String(p.bilan).trim() !== '') ? p.bilan : '';
@@ -1758,8 +1765,20 @@ pause >nul
           return `<a href="${href}" target="_blank" rel="noopener noreferrer">${lab}</a>`;
         }).join('')}</div>` : '';
 
-    const shotsHtml = demoShots.map(src=>`<img class="proj-img-full" src="${src}" alt="Capture d'écran" loading="lazy">`).join('');
-    const videoHtml = demoVideo ? `<video class="proj-video-full" src="${demoVideo}" controls preload="metadata" playsinline></video>` : '';
+    const shotsHtml = demoShots.map(item=>{
+      const src = typeof item === 'string' ? item : item.src;
+      const label = typeof item === 'string' ? '' : item.label;
+      const imgHtml = `<img class="proj-img-full" src="${src}" alt="Capture d'écran" loading="lazy">`;
+      const captionHtml = label ? `<div class="proj-img-caption">${label}</div>` : '';
+      return imgHtml + captionHtml;
+    }).join('');
+    const videoHtml = demoVideo ? (()=>{
+      const src = typeof demoVideo === 'string' ? demoVideo : demoVideo.src;
+      const label = typeof demoVideo === 'string' ? '' : demoVideo.label;
+      const vidHtml = `<video class="proj-video-full" src="${src}" controls preload="metadata" playsinline></video>`;
+      const captionHtml = label ? `<div class="proj-video-caption">${label}</div>` : '';
+      return vidHtml + captionHtml;
+    })() : '';
     const demoIntroHtml = demoIntro
       ? `<p class="proj-prose">${nl2brProj(demoIntro)}</p>`
       : `<p class="proj-prose">Texte libre, liens, captures <strong>100&nbsp;% largeur</strong> et vidéo explicative (fichiers dans le dossier <code>video/</code>).</p>`;
