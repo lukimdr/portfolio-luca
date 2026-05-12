@@ -483,7 +483,7 @@
   .oh-num { font-family:var(--font-display); font-size:7rem; font-weight:900; color:rgba(224,244,255,.07); position:absolute; right:1.8rem; top:52%; transform:translateY(-50%); line-height:1; pointer-events:none; }
   .overlay-hero-left { position:relative; z-index:1; max-width:42rem; }
   /* Colonne de contenu projet : même largeur que le bloc titre (évite chips / textes plus larges que le titre) */
-  .proj-doc-wrap { max-width:42rem; width:100%; }
+  .proj-doc-wrap { max-width:80rem; width:100%; }
   .overlay-emoji { font-size:4rem; margin-bottom:1.5rem; display:block; }
   .overlay-title { font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:900; letter-spacing:-1px; color:var(--c-text); margin-bottom:.5rem; text-shadow:0 0 24px rgba(218,41,28,.25); animation:titlePulse 3.4s ease-in-out infinite; }
   .overlay-subtitle { font-family:var(--font-mono); font-size:.75rem; letter-spacing:3px; color:var(--c-muted); text-transform:uppercase; }
@@ -808,7 +808,7 @@
         <li><a href="#why">                  <i class="fas fa-star"></i>          Valeur</a></li>
         <li><a href="#contact">              <i class="fas fa-at"></i>            Contact</a></li>
       </ul>
-      <button type="button" id="theme-toggle" class="nav-theme-btn" aria-label="Basculer le thème sakura" title="Thème clair sakura / nuit">
+      <button type="button" id="theme-toggle" class="nav-theme-btn" aria-label="Basculer le mode clair" title="Mode clair / Mode nuit">
         <i class="fas fa-sun" id="theme-toggle-icon" aria-hidden="true"></i><span class="nav-theme-label" id="theme-toggle-label">Claire</span>
       </button>
     </div>
@@ -996,7 +996,7 @@
     ╚══════════════════════════════════════════════════════════════════╝ */
   const TYPING_PHRASES = [
     "Futur Apprenti CFC",
-    "Développeur Full-Stack",
+    "Dévops",
     "Passionné d'IA",
     "Automatiseur",
     "Curieux & Déterminé",
@@ -1027,14 +1027,13 @@
   meta: { role: "Développeur Scripting", duration: "~2 heures", type: "Outil CLI (Console)", stack: "CMD / Batch" },
   metrics: [
     { n: "100%",  l: "Sans install" },
-    { n: "0ms",  l: "Latence" },
+    { n: "3",  l: "Modes" },
     { n: "Light", l: "0 dépendance" }
   ],
   media: [
     { type: "image", src: "video/batch01.png", label: "Interface console du script" }
   ],
-  context: "Développement d'un utilitaire système léger pour apprendre la manipulation de flux de données (I/O) et les conditions en langage de script Windows.",
-  desc: `Ce projet consiste en un script Windows Batch (.bat) permettant de gérer des notes textuelles directement depuis l'invité de commande. L'objectif était de créer un outil ultra-léger, sans interface graphique, capable d'horodater et d'archiver des entrées utilisateur.\n\nLe script utilise les commandes systèmes pour structurer un menu interactif, gérer les erreurs (fichier inexistant) et assurer la persistance des données dans un fichier local .txt. C'est un excellent exemple d'automatisation de tâches de base en environnement Windows.`,
+  context: "créeation d'un mini outil de gestion de notes avec 3 mode 1  pour lire les notes 2 pour ajouter une note et 3 pour quitter le programme trés facile d'utilisation et efficace pour prendre des notes rapide sans devoir ouvrir une application lourde",
   highlights: [
     'Script Batch ultra léger pour prise de notes avec stockage local.'
   ],
@@ -1352,12 +1351,13 @@ pause >nul
       wipProgress: 75,
       metrics: [
         { n: "Privé", l: "Données locales" },
-        { n: "0 clic",  l: "Lancement guidé" },
+        { n: "0 $",  l: "Totalment" },
         { n: "24/7",  l: "Veille serveur" }
       ],
       media: [ 
         { type: "image", src: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80", label: "Schéma inspiration homelab" },
         { type: "video", src: "video/2026-05-07-20h36m31s_seed978721212_POV cinematic high-speed flight skimming inches ab.mp4", label: "Rendu Wan 2.1 local : Exemple de persistance visuelle. L'IA a interprété le logo Gemini de l'image source (générée par Gemini) comme un élément clé du décor, le maintenant de manière cohérente tout au long de l'animation." },
+        { type: "video", src: "video/IMG_3711.mp4", label: "Live démo" },
         { type: "image", src: "", label: "Photo de la tour / GPU", placeholder: true },
         { type: "video", src: "", label: "Screen capture bot + progression", placeholder: true }
       ],
@@ -1436,13 +1436,14 @@ pause >nul
         { title: "Privé", text: "Le cloud maison, Sans Personne Pour vous piquer vos données." }
       ],
       
-      code: `<span class="comment"># Détection URL Gradio + notification Telegram</span>
-  Get-Content <span class="string">"server.log"</span> -Wait | <span class="func">ForEach-Object</span> {
-    <span class="keyword">if</span> ($_ -match <span class="string">"(https://[a-z0-9]+\\.gradio\\.live)"</span>) {
-      $url = $matches[1]
-      <span class="func">Invoke-RestMethod</span> -Uri <span class="string">"$telegram_api/sendMessage"</span> -Body @{ chat_id=<span class="string">"$CHAT_ID"</span>; text=<span class="string">"Serveur prêt: $url"</span> }
-    }
-  }`,
+      code: `<span class="comment">:: 7. Lance le Bot Telegram</span>
+  echo [*] Activation du Bot @pc_luki_bot...
+  start "BOT TELEGRAM" powershell -NoExit -Command "& 'C:\pinokio\api\wan2.git\app\env\Scripts\python.exe' mon_bot.py"
+
+  <span class="comment">:: 8. Boost de priorite pour les processus IA (Python et Pinokio)</span>
+  echo [*] Boost de priorite (High Priority) en cours...
+  wmic process where "name='Pinokio.exe'" CALL setpriority "high priority" >nul 2>&1
+  wmic process where "name='python.exe'" CALL setpriority "high priority" >nul 2>&1`,
       github: "https://github.com/tonusername/homelab-ia"
     }
   ];
@@ -1704,17 +1705,8 @@ pause >nul
 
     let demoIntro = (p.demoIntro != null && String(p.demoIntro).trim() !== '') ? p.demoIntro : (p.demoText || '');
     let demoLinks = Array.isArray(p.demoLinks) ? p.demoLinks : [];
-    let demoShots = Array.isArray(p.demoShots) ? p.demoShots.filter(Boolean) : [];
-    if(!demoShots.length && p.media){
-      p.media.forEach(m=>{
-        if(m.type==='image' && m.src && String(m.src).trim()!=='' && !m.placeholder) demoShots.push({src: m.src, label: m.label});
-      });
-    }
-    let demoVideo = (p.demoVideo && String(p.demoVideo).trim()) ? p.demoVideo.trim() : '';
-    if(!demoVideo && p.media){
-      const v = p.media.find(m=>m.type==='video' && m.src && String(m.src).trim()!=='' && !m.placeholder);
-      if(v) demoVideo = {src: v.src, label: v.label};
-    }
+    const demoMediaItems = Array.isArray(p.media) ? p.media.filter(m=>m.src && String(m.src).trim()!=='' && !m.placeholder) : [];
+    const demoMediaHtml = demoMediaItems.map(m=>mediaCellHtml(m,p)).join('');
 
     let bilan = (p.bilan != null && String(p.bilan).trim() !== '') ? p.bilan : '';
     if(!bilan && (p.lessons||[]).length){
@@ -1765,20 +1757,6 @@ pause >nul
           return `<a href="${href}" target="_blank" rel="noopener noreferrer">${lab}</a>`;
         }).join('')}</div>` : '';
 
-    const shotsHtml = demoShots.map(item=>{
-      const src = typeof item === 'string' ? item : item.src;
-      const label = typeof item === 'string' ? '' : item.label;
-      const imgHtml = `<img class="proj-img-full" src="${src}" alt="Capture d'écran" loading="lazy">`;
-      const captionHtml = label ? `<div class="proj-img-caption">${label}</div>` : '';
-      return imgHtml + captionHtml;
-    }).join('');
-    const videoHtml = demoVideo ? (()=>{
-      const src = typeof demoVideo === 'string' ? demoVideo : demoVideo.src;
-      const label = typeof demoVideo === 'string' ? '' : demoVideo.label;
-      const vidHtml = `<video class="proj-video-full" src="${src}" controls preload="metadata" playsinline></video>`;
-      const captionHtml = label ? `<div class="proj-video-caption">${label}</div>` : '';
-      return vidHtml + captionHtml;
-    })() : '';
     const demoIntroHtml = demoIntro
       ? `<p class="proj-prose">${nl2brProj(demoIntro)}</p>`
       : `<p class="proj-prose">Texte libre, liens, captures <strong>100&nbsp;% largeur</strong> et vidéo explicative (fichiers dans le dossier <code>video/</code>).</p>`;
@@ -1791,7 +1769,7 @@ pause >nul
       <h2 class="proj-h2">Démonstration projet / Démo live</h2>
       ${demoIntroHtml}
       ${linksHtml}
-      <div class="proj-demo-gallery">${shotsHtml}${videoHtml}</div>
+      <div class="proj-demo-gallery">${demoMediaHtml}</div>
       ${codeDemoHtml}`;
 
     const bilanBlock = bilan ? `
@@ -1871,7 +1849,7 @@ pause >nul
     const overviewPanel = `
       <div class="overlay-proj-panel active overlay-proj-enter" data-panel="overview">
         ${docStack}
-        <div class="overlay-section overlay-proj-enter"><h4>// Description & déroulé</h4><p>${p.desc.replace(/\n/g,'<br><br>')}</p>${highlightsHTML}</div>
+        <div class="overlay-section overlay-proj-enter"><h4>// Description & déroulé</h4><p>${p.desc ? p.desc.replace(/\n/g,'<br><br>') : ''}</p>${highlightsHTML}</div>
         ${delivHTML}
         ${skillBlock}
         ${lessonsBlock}
@@ -2147,7 +2125,7 @@ pause >nul
     const ic=document.getElementById('theme-toggle-icon');
     const lb=document.getElementById('theme-toggle-label');
     if(ic) ic.className=light?'fas fa-moon':'fas fa-sun';
-    if(lb) lb.textContent=light?'Nuit':'Sakura';
+    if(lb) lb.textContent=light?'Nuit':'Clair';
   }
   function togglePortfolioTheme(){
     document.documentElement.classList.toggle('theme-sakura');
