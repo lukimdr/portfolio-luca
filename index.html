@@ -8,6 +8,8 @@
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
   
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body, html {
@@ -62,6 +64,187 @@
       background: linear-gradient(to bottom, #e8ff47, transparent);
       margin: 12px auto 0;
     }
+
+    /* ── Countdown Counter ── */
+    .countdown-wrapper {
+      position: absolute;
+      right: 36px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .countdown-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(218, 167, 167, 0.45);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      margin-bottom: 8px;
+    }
+
+    .countdown-number-container {
+      position: relative;
+      width: 52px;
+      height: 68px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 255, 71, 0.12);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .countdown-digit {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1.65rem;
+      color: #e8ff47;
+      transition: none;
+    }
+
+    .countdown-digit.current {
+      animation: digitFallIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .countdown-digit.exiting {
+      animation: digitFallOut 0.5s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+    }
+
+    @keyframes digitFallIn {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+        filter: blur(4px);
+      }
+      60% {
+        opacity: 1;
+        filter: blur(0px);
+      }
+      80% {
+        transform: translateY(6%);
+      }
+      100% {
+        transform: translateY(0%);
+        opacity: 1;
+        filter: blur(0px);
+      }
+    }
+
+    @keyframes digitFallOut {
+      0% {
+        transform: translateY(0%);
+        opacity: 1;
+        filter: blur(0px);
+      }
+      40% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(140%);
+        opacity: 0;
+        filter: blur(6px);
+      }
+    }
+
+    /* Progress arc */
+    .countdown-ring {
+      width: 52px;
+      height: 52px;
+      margin-top: 2px;
+    }
+
+    .countdown-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .countdown-ring .ring-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.05);
+      stroke-width: 2;
+    }
+
+    .countdown-ring .ring-progress {
+      fill: none;
+      stroke: #e8ff47;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 138.23;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+      filter: drop-shadow(0 0 4px rgba(232, 255, 71, 0.4));
+    }
+
+    /* Pulse when almost done */
+    .countdown-wrapper.urgent .countdown-number-container {
+      border-color: rgba(232, 255, 71, 0.35);
+      box-shadow: 0 0 20px rgba(232, 255, 71, 0.08);
+      animation: urgentPulse 0.8s ease-in-out infinite;
+    }
+
+    .countdown-wrapper.urgent .countdown-digit.current {
+      color: #ff6b6b;
+      text-shadow: 0 0 12px rgba(255, 107, 107, 0.5);
+    }
+
+    .countdown-wrapper.urgent .ring-progress {
+      stroke: #ff6b6b;
+      filter: drop-shadow(0 0 6px rgba(255, 107, 107, 0.5));
+    }
+
+    @keyframes urgentPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    /* Hide on exit */
+    #intro.exit .countdown-wrapper {
+      opacity: 0;
+      transform: translateY(-50%) translateX(40px);
+      transition: opacity 0.6s ease, transform 0.8s ease;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      .countdown-wrapper {
+        right: 16px;
+        top: auto;
+        bottom: 22vh;
+        transform: none;
+      }
+      #intro.exit .countdown-wrapper {
+        transform: translateX(40px);
+      }
+      .countdown-number-container {
+        width: 42px;
+        height: 56px;
+      }
+      .countdown-digit {
+        font-size: 1.3rem;
+      }
+      .countdown-ring {
+        width: 42px;
+        height: 42px;
+      }
+      .countdown-label {
+        font-size: 0.48rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -75,30 +258,121 @@
       <span>DÉFILER POUR ENTRER</span>
       <div class="scroll-line"></div>
     </div>
+
+    <!-- Countdown -->
+    <div class="countdown-wrapper" id="countdownWrapper">
+      <div class="countdown-label">AUTO</div>
+      <div class="countdown-number-container" id="countdownBox">
+        <div class="countdown-digit current" id="digitCurrent">10</div>
+      </div>
+      <div class="countdown-ring">
+        <svg viewBox="0 0 52 52">
+          <circle class="ring-bg" cx="26" cy="26" r="22"/>
+          <circle class="ring-progress" id="ringProgress" cx="26" cy="26" r="22"/>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <script>
     let hasExited = false;
+    let countdownValue = 10;
+    let countdownInterval = null;
+    const TOTAL = 10;
+    const CIRCUMFERENCE = 2 * Math.PI * 22; // ~138.23
 
     function exitIntro() {
       if (hasExited) return;
       hasExited = true;
 
+      // Stop countdown
+      clearInterval(countdownInterval);
+
       const intro = document.getElementById('intro');
       intro.classList.add('exit');
 
-      // Redirection vers ton fichier principal après l'animation
       setTimeout(() => {
         window.location.href = "indextest.html?from=intro";
       }, 1400);
     }
 
-    // Scroll avec la molette → redirection 
+    function updateDigit(newVal) {
+      const box = document.getElementById('countdownBox');
+      const oldDigit = box.querySelector('.countdown-digit.current');
+
+      // Mark old as exiting
+      if (oldDigit) {
+        oldDigit.classList.remove('current');
+        oldDigit.classList.add('exiting');
+        setTimeout(() => oldDigit.remove(), 500);
+      }
+
+      // Create new digit
+      const newDigit = document.createElement('div');
+      newDigit.className = 'countdown-digit current';
+      newDigit.textContent = newVal;
+      box.appendChild(newDigit);
+    }
+
+    function updateRing() {
+      const progress = document.getElementById('ringProgress');
+      const fraction = countdownValue / TOTAL;
+      const offset = CIRCUMFERENCE * (1 - fraction);
+      progress.style.strokeDashoffset = offset;
+    }
+
+    function startCountdown() {
+      const progress = document.getElementById('ringProgress');
+      progress.style.strokeDasharray = CIRCUMFERENCE;
+      progress.style.strokeDashoffset = 0;
+
+      countdownInterval = setInterval(() => {
+        if (hasExited) {
+          clearInterval(countdownInterval);
+          return;
+        }
+
+        countdownValue--;
+        updateDigit(countdownValue);
+        updateRing();
+
+        // Urgent mode at 3 seconds
+        if (countdownValue <= 3) {
+          document.getElementById('countdownWrapper').classList.add('urgent');
+        }
+
+        if (countdownValue <= 0) {
+          clearInterval(countdownInterval);
+          // Auto-swipe after reaching 0
+          setTimeout(() => {
+            exitIntro();
+          }, 600);
+        }
+      }, 1000);
+    }
+
+    // Start countdown on load
+    window.addEventListener('load', () => {
+      setTimeout(startCountdown, 400);
+    });
+
+    // Scroll → exit
     window.addEventListener('wheel', () => {
       if (!hasExited) exitIntro();
     }, { once: true });
 
-    // Touche espace ou flèche bas → redirection
+    // Touch swipe → exit
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      const delta = touchStartY - e.changedTouches[0].clientY;
+      if (delta > 40 && !hasExited) exitIntro();
+    }, { passive: true });
+
+    // Keyboard → exit
     document.addEventListener('keydown', (e) => {
       if ((e.key === " " || e.key === "ArrowDown") && !hasExited) {
         exitIntro();
