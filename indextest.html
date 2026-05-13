@@ -1161,7 +1161,7 @@ pause >nul
   ],
   planMedia: [
     { type: "image", src: "video/AoD0T.jpg", label: "Architecture serveur de fichiers" },
-    { type: "image", src: "video/AoD0T.jpg", label: "Photo du vieux PC recyclé", placeholder: true }
+    { type: "image", src: "video/Vieuxpc.png", label: "Photo du vieux PC recyclé" }
   ],
   context: "Installation et configuration d’un NAS dans le cadre de l'obtention de mon CFC. Apprendre à monter un serveur de A à Z en recyclant du vieux matériel. L'objectif était de découvrir les bases de la gestion de serveur, fichier et différentes utilisateurs avec des droits d'accès différents",
   desc: `Ce projet repose sur la restauration d'un ancien PC pour en faire un centre de stockage centralisé. J'ai installé Altal OS (version légère de windows) pour maximiser les performances de la machine. Pour garantir un accès permanent, j'ai configuré une adresse IP statique (hors plage DHCP), évitant ainsi les pertes de connexion après un redémarrage de la box. Côté sécurité, j'ai structuré le serveur avec plusieurs comptes utilisateurs, chacun possédant des droits d'accès spécifiques (lecture/écriture) sur ses propres dossiers.`,
@@ -1219,7 +1219,7 @@ pause >nul
       meta: { role: "Automatisation", duration: "Itération continue", type: "Pipeline média", stack: "n8n · HTTP · stockage" },
       metrics: [
         { n: "12+",  l: "Nœuds actifs" },
-        { n: "~2m",  l: "Script → export" },
+        { n: "9",  l: "Platformes cibles" },
         { n: "24/7",  l: "Planification" }
       ],
       media: [
@@ -1227,7 +1227,7 @@ pause >nul
         { type: "image", src: "", label: "dashboard n8n" },
         { type: "image", src: "video/N8n_tiktok.png", label: "Schéma du workflow" }
       ],
-      context: "Objectif : Automatiser la création de video tik tok grace a l'ia ou Sans (à choix en partant d'une video deja existante ou en partant jutee d'une idée simple Pour plus de créativité",
+      context: "Objectif : Automatiser la création et la publication de video tik tok grace a l'ia ou Sans (à choix en partant d'une video deja existante ou en partant jutee d'une idée simple Pour plus de créativité",
       desc: `Le workflow est découpé en étages logiques : ingestion des sujets (feuille, webhook ou formulaire), enrichissement (météo tendances, hashtags), génération de script court, synthèse vocale, montage ou assemblage visuel, puis poussée vers la plateforme cible.\n\nChaque étage possède une branche « erreur » : en cas d’échec API ou de fichier manquant, une notification (email, Slack, Telegram) part avec le contexte JSON pour déboguer vite. Les exécutions planifiées et manuelles cohabitent : même graphe, triggers différents.\n\nLa documentation interne décrit les quotas, la stratégie de retry exponentiel et la politique de nommage des fichiers rendus — indispensable quand plusieurs variantes d’une même campagne tournent en parallèle.`,
       highlights: [
         'Séparation stricte données / présentation : items JSON standardisés entre nœuds.',
@@ -1241,6 +1241,20 @@ pause >nul
         'Check-list conformité (musique, droits, mentions)',
         'Noeuds de notification d’échec avec lien direct vers l’exécution',
         'Jeux de données de test anonymisés'
+      ],
+      challenges: [
+        {
+          problem: "Timeouts lors du rendu vidéo : Les APIs comme Captions.ai ou JSON2Video peuvent mettre plusieurs minutes à générer le fichier, dépassant les délais standards de n8n.",
+          solution: "Implémentation de nœuds 'Wait' stratégiques (visibles dans l'étape 3 du schéma) et de boucles de polling pour vérifier le statut de l'export avant de passer à la diffusion."
+        },
+        {
+          problem: "Hétérogénéité des formats : Publier sur 9 plateformes (TikTok 9:16 vs LinkedIn/Threads) demande une gestion spécifique des métadonnées et des tailles de fichiers.",
+          solution: "Utilisation de Blotato comme passerelle d'abstraction pour normaliser l'envoi, couplée à une logique de formatage JSON dynamique en amont dans n8n."
+        },
+        {
+          problem: "Instabilité des APIs de téléchargement (RapidAPI/TikTok) qui échouent parfois sans raison apparente.",
+          solution: "Configuration de 'Retry' automatiques avec un délai exponentiel et création d'un canal de secours Telegram pour recevoir une alerte immédiate avec le lien direct vers l'exécution en erreur."
+        }
       ],
       skillBars: [
         { label: "n8n & logique branches", pct: 88 },
@@ -1271,7 +1285,7 @@ pause >nul
       short: "Site vitrine événement : parcours visiteur, infos pratiques, appels à l’action — prêt à brancher vos médias officiels.",
       tags: ["HTML","CSS","JavaScript","UI/UX","Accessibilité"],
       status: "done",
-      meta: { role: "Intégration web", duration: "Sprint contenu", type: "Site institutionnel", stack: "HTML · CSS · JS" },
+      meta: { role: "Intégration web", duration: "Sprint contenu", type: "Site institutionnel", stack: "HTML · CSS · JS", collaboration: "Travail de groupe", presentation: "Présentation projet" },
       metrics: [
         { n: "8+",  l: "Sections clés" },
         { n: "100%", l: "Responsive" },
@@ -1313,12 +1327,12 @@ pause >nul
         { title: "Stakeholders", text: "Un site scolaire vit par le contenu : prévoir des zones modifiables sans toucher au layout." },
         { title: "Événement", text: "Afficher clairement la date/lieu au-dessus de la ligne de flottaison évite 80 % des mails répétitifs." }
       ],
-        problemPoints: [
-    'Le type de fichier Gif ne s\'affiche pas correctement sur les différents navigateurs,'
-  ],
-  solutionPoints: [
-    'il est préférable d\'utiliser des formats vidéo ou des animations CSS pour garantir une compatibilité maximale.'
-  ],
+      problemPoints: [
+        'Le type de fichier Gif ne s\'affiche pas correctement sur les différents navigateurs.'
+      ],
+      solutionPoints: [
+        'Il est préférable d\'utiliser des formats vidéo ou des animations CSS pour garantir une compatibilité maximale.'
+      ],
       code: `<span class="keyword">const</span> sections = [<span class="string">"Programme"</span>, <span class="string">"Ateliers"</span>, <span class="string">"Inscription"</span>];
   sections.<span class="func">forEach</span>(name => renderSection(name));`,
       github: "https://github.com/tonusername/portes-ouvertes-ceff"
@@ -1391,6 +1405,14 @@ pause >nul
         { title: "Hybride", text: "Savoir quand arrêter de « patcher Windows » et basculer sur Linux est une compétence d’ingénieur, pas une défaite." },
         { title: "Surface d’attaque", text: "Un bot exposé mérite le même niveau de parano qu’une mini-API publique." }
       ],
+        problemPoints: [
+    'Difficultée de conextion entre les diffrante platfomes',
+    'Probleme de connection entre les api GTP/groq et le bot telegram',
+  ],
+  solutionPoints: [
+    'crée un point de connection entre Toutes les platformes et avoir un excel avex Bien tout les user name mot de passe.',
+    'Bien copier la bonne kay api et la sauvagarder quelque part en cas de besoin de réinstallation ou de changement de machine ou de modele',
+  ],
       code: `<span class="comment"># Gateway OpenClaw (mode hybride WSL2)</span>
   <span class="keyword">from</span> openclaw <span class="keyword">import</span> <span class="func">AgentOrchestrator</span>
   orchestrator = <span class="func">AgentOrchestrator</span>(
@@ -1439,12 +1461,12 @@ pause >nul
       ],
       realisationIntro: "Exemples de livrables techniques (à adapter dans la fiche projet) :",
       realisationItems: [
-        "Créer un fichier .bat d'orchestration (profil d'alimentation Windows + lancement des services).",
+        "Créer un fichier .bat d'orchestration (profil d'alimentation Windows + lancement des services Wan2.1).",
         "Script PowerShell qui suit les logs et extrait l'URL publique Gradio pour la notifier.",
         "Bot Telegram avec allowlist d'IDs et messages d'état mis à jour sans spam.",
-        "Documentation des scénarios de reprise si le tunnel ou le GPU tombe en cours de route."
+        "Documentation des scénarios de reprise si le tunnel ou le GPU tombe en cours de route ou ram sursargée."
       ],
-      demoIntro: "Ci-dessous : captures pleine largeur et vidéo explicative une fois les fichiers ajoutés dans le dossier video/.",
+      demoIntro: "Ci-dessous : captures pleine largeur et vidéo explicative une fois les fichiers ajoutés dans le dossier output/.",
       demoLinks: [
         { href: "https://github.com/tonusername/homelab-ia", label: "Dépôt GitHub (exemple)" }
       ],
@@ -1877,6 +1899,8 @@ pause >nul
     if(meta.duration) metaChips.push(`<span class="proj-meta-chip"><i class="fas fa-hourglass-half"></i> ${meta.duration}</span>`);
     if(meta.type) metaChips.push(`<span class="proj-meta-chip"><i class="fas fa-layer-group"></i> ${meta.type}</span>`);
     if(meta.stack) metaChips.push(`<span class="proj-meta-chip"><i class="fas fa-cubes"></i> ${meta.stack}</span>`);
+    if(meta.collaboration) metaChips.push(`<span class="proj-meta-chip"><i class="fas fa-users"></i> ${meta.collaboration}</span>`);
+    if(meta.presentation) metaChips.push(`<span class="proj-meta-chip"><i class="fas fa-bullhorn"></i> ${meta.presentation}</span>`);
     const metaRow=metaChips.length?`<div class="proj-meta-row overlay-proj-enter">${metaChips.join('')}</div>`:'';
 
     const docStack = buildProjDocHtml(p);
