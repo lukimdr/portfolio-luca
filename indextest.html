@@ -1149,9 +1149,9 @@ pause >nul
   year: "2024 — JUIN",
   emoji: "🗄️",
   lottie: "",
-  title: "Recycled old in NAS",
+  title: "Recycled old PC in NAS",
   short: "Transformation d'un ancien PC en serveur de stockage réseau (NAS) sous Altal OS avec gestion multi-utilisateurs et IP statique.",
-  tags: ["Hardware", "Samba", "Networking", "Altal OS", "Security"],
+  tags: ["Hardware", "Networking", "Altal OS", "Security"],
   status: "done",
   meta: { role: "Admin Système Junior", duration: "1-2 semaine", type: "Infrastructure", stack: "Altal OS / Linux" },
   metrics: [
@@ -1224,8 +1224,8 @@ pause >nul
       ],
       media: [
         { type: "video", src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", label: "Exemple de fichier vidéo (remplacez par votre rendu)" },
-        { type: "image", src: "", label: "dashboard n8n" },
-        { type: "image", src: "video/N8n_tiktok.png", label: "Schéma du workflow" }
+        { type: "image", src: "video/N8n_tiktok.png", label: "Schéma du workflow" },
+        { type: "image", src: "video/cp.boucle.png", label: "<b>Boucle de code</b>" }
       ],
       context: "Objectif : Automatiser la création et la publication de video tik tok grace a l'ia ou Sans (à choix en partant d'une video deja existante ou en partant jutee d'une idée simple Pour plus de créativité",
       desc: `Le workflow est découpé en étages logiques : ingestion des sujets (feuille, webhook ou formulaire), enrichissement (météo tendances, hashtags), génération de script court, synthèse vocale, montage ou assemblage visuel, puis poussée vers la plateforme cible.\n\nChaque étage possède une branche « erreur » : en cas d’échec API ou de fichier manquant, une notification (email, Slack, Telegram) part avec le contexte JSON pour déboguer vite. Les exécutions planifiées et manuelles cohabitent : même graphe, triggers différents.\n\nLa documentation interne décrit les quotas, la stratégie de retry exponentiel et la politique de nommage des fichiers rendus — indispensable quand plusieurs variantes d’une même campagne tournent en parallèle.`,
@@ -1266,14 +1266,6 @@ pause >nul
         { title: "Fiabilité", text: "Prévoir le pire cas (API down) vaut mieux que d’empiler les nœuds magiques." },
         { title: "Créa", text: "Automatiser 80 % du bruit libère du temps pour le 20 % créatif réellement différenciant." }
       ],
-      
-      
-      code: `<span class="keyword">const</span> payload = {
-    title: item.title,
-    voice: item.voice,
-    hashtags: item.tags
-  };
-  <span class="keyword">return</span> $http.<span class="func">post</span>(<span class="string">"/render-and-publish"</span>, payload);`,
       github: "https://github.com/tonusername/n8n-tiktok-automation"
     },
     {
@@ -1333,8 +1325,27 @@ pause >nul
       solutionPoints: [
         'Il est préférable d\'utiliser des formats vidéo ou des animations CSS pour garantir une compatibilité maximale.'
       ],
-      code: `<span class="keyword">const</span> sections = [<span class="string">"Programme"</span>, <span class="string">"Ateliers"</span>, <span class="string">"Inscription"</span>];
-  sections.<span class="func">forEach</span>(name => renderSection(name));`,
+      code: `</head>
+<body>
+    <header>
+   <div class="logo">
+  <a href="/enter/enter.html" class="logo-link">
+    <img src="/photo/ChatGPT Image 6 nov. 2025, 08_51_43.png" alt="Logo Luxus Chamba" class="logo-img">
+    <span class="logo-text">Chamba shop</span>
+  </a>
+</div>
+
+
+
+
+    <nav>
+        <ul>
+            <li><a href="Home.html">Accueil</a></li>
+            <li><a href="/voiture/voiture.html">Voitures</a></li>
+            <li><a href="/contact/contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>`,
       github: "https://github.com/tonusername/portes-ouvertes-ceff"
     },
     {
@@ -1540,9 +1551,9 @@ pause >nul
     {
       id: 'backend', label: 'Backend', icon: '🐍',
       rings: [
-        { name: 'Python & Automation',  desc: 'Scripts, APIs, bots, pipelines',       pct: 12 },
+        { name: 'Python & Automation',  desc: 'Scripts, APIs, bots, pipelines',       pct: 52 },
         { name: 'IA & LLM Integration', desc: 'OpenAI, Anthropic, LangChain, RAG',    pct: 68 },
-        { name: 'Base de données & SQL',desc: 'MySQL, PostgreSQL, Merise',             pct: 22 },
+        { name: 'Base de données & SQL',desc: 'MySQL, PostgreSQL, Merise',             pct: 72 },
         { name: 'Sécurité & Crypto',    desc: 'AES-256, Argon2, OWASP',              pct: 37 }
       ]
     },
@@ -1850,7 +1861,7 @@ pause >nul
       : '';
 
     const codeDemoHtml = p.code
-      ? `<div class="proj-code-block"><h3>// Extrait de code</h3><pre class="proj-code">${p.code}</pre></div>`
+      ? (p.id === 4 ? `<div class="proj-code-block"><h3>// Extrait de code</h3><div style="font-family: sans-serif; color: var(--c-text); background: rgba(0,0,0,.1); padding: 1rem; border-radius: 8px; white-space: pre-wrap;">${p.code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div></div>` : `<div class="proj-code-block"><h3>// Extrait de code</h3><pre class="proj-code">${p.code}</pre></div>`)
       : '';
 
     const demoBlock = `
