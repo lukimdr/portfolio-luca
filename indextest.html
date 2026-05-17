@@ -1016,7 +1016,7 @@
 
   <footer>
     <p>© 2026 LUCA STEFFEN • FUTUR APPRENTI CFC INFORMATICIEN • PORTFOLIO STATIQUE — GITHUB PAGES</p>
-    <p style="margin-top:.5rem;opacity:.4">AUCUNE DONNÉE PERSONNELLE COLLECTÉE • CONÇU AVEC THREE.JS + GSAP</p>
+    <p style="margin-top:.5rem;opacity:.4">AUCUNE DONNÉE PERSONNELLE COLLECTÉE • CONÇU AVEC HTML/CSS/JS + Telegram</p>
   </footer>
 
   <!-- ═══════════════════════════════════════════════════════════════════
@@ -1157,14 +1157,14 @@ pause >nul
   metrics: [
     { n: "0€",   l: "Budget (Recyclage)" },
     { n: "3+",   l: "Comptes utilisateurs" },
-    { n: "1Gbps", l: "Vitesse LAN" }
+    { n: "vitesse", l: " réseau local" }
   ],
   planMedia: [
     { type: "image", src: "video/AoD0T.jpg", label: "Architecture serveur de fichiers" },
     { type: "image", src: "video/Vieuxpc.png", label: "Photo du vieux PC recyclé" }
   ],
-  context: "Installation et configuration d’un NAS dans le cadre de l'obtention de mon CFC. Apprendre à monter un serveur de A à Z en recyclant du vieux matériel. L'objectif était de découvrir les bases de la gestion de serveur, fichier et différentes utilisateurs avec des droits d'accès différents",
-  desc: `Ce projet repose sur la restauration d'un ancien PC pour en faire un centre de stockage centralisé. J'ai installé Altal OS (version légère de windows) pour maximiser les performances de la machine. Pour garantir un accès permanent, j'ai configuré une adresse IP statique (hors plage DHCP), évitant ainsi les pertes de connexion après un redémarrage de la box. Côté sécurité, j'ai structuré le serveur avec plusieurs comptes utilisateurs, chacun possédant des droits d'accès spécifiques (lecture/écriture) sur ses propres dossiers.`,
+  context: "Installation et configuration d'un PC en serveur de stockage réseau (NAS). Apprendre à monter un serveur de A à Z en recyclant du vieux matériel. L'objectif était de découvrir les bases de la gestion de serveur, fichier et différentes utilisateurs avec des droits d'accès différents",
+  desc: `Ce projet repose sur la restauration d'un ancien PC pour en faire un centre de stockage centralisé et ou l'utiliser en mode serveur pour d'autre but (DHCP/DNS/Base de données/...). J'ai installé Altal OS (version légère de windows) pour maximiser les performances de la machine. Pour garantir un accès permanent, j'ai configuré une adresse IP statique (hors plage DHCP), évitant ainsi les pertes de connexion après un redémarrage de la box. Côté sécurité, j'ai structuré le serveur avec plusieurs comptes utilisateurs, chacun possédant des droits d'accès spécifiques (lecture/écriture/modification) sur ses propres dossiers.`,
   highlights: [
     'Configuration manuelle du réseau (ip, Passerelle, DNS) pour éviter le DHCP.',
     'Installation et paramétrage des droit de lecture et d\'écriture pour le partage de fichiers Windows.',
@@ -1227,7 +1227,7 @@ pause >nul
         { type: "image", src: "video/N8n_tiktok.png", label: "Schéma du workflow" },
         { type: "image", src: "video/cp.boucle.png", label: "<b>Boucle de code</b>" }
       ],
-      context: "Objectif : Automatiser la création et la publication de video tik tok grace a l'ia ou Sans (à choix en partant d'une video deja existante ou en partant jutee d'une idée simple Pour plus de créativité",
+      context: "Le but est d'automatiser la création et la publication de vidéos TikTok grâce à l'IA ou sans (à choix en partant d'une vidéo déjà existante ou en partant juste d'une idée simple Pour plus de créativité)",
       desc: `Le workflow est découpé en étages logiques : ingestion des sujets (feuille, webhook ou formulaire), enrichissement (météo tendances, hashtags), génération de script court, synthèse vocale, montage ou assemblage visuel, puis poussée vers la plateforme cible.\n\nChaque étage possède une branche « erreur » : en cas d’échec API ou de fichier manquant, une notification (email, Slack, Telegram) part avec le contexte JSON pour déboguer vite. Les exécutions planifiées et manuelles cohabitent : même graphe, triggers différents.\n\nLa documentation interne décrit les quotas, la stratégie de retry exponentiel et la politique de nommage des fichiers rendus — indispensable quand plusieurs variantes d’une même campagne tournent en parallèle.`,
       highlights: [
         'Séparation stricte données / présentation : items JSON standardisés entre nœuds.',
@@ -1238,7 +1238,6 @@ pause >nul
       ],
       deliverables: [
         'Workflow exportable JSON + README triggers',
-        'Check-list conformité (musique, droits, mentions)',
         'Noeuds de notification d’échec avec lien direct vers l’exécution',
         'Jeux de données de test anonymisés'
       ],
@@ -1248,8 +1247,8 @@ pause >nul
           solution: "Implémentation de nœuds 'Wait' stratégiques (visibles dans l'étape 3 du schéma) et de boucles de polling pour vérifier le statut de l'export avant de passer à la diffusion."
         },
         {
-          problem: "Hétérogénéité des formats : Publier sur 9 plateformes (TikTok 9:16 vs LinkedIn/Threads) demande une gestion spécifique des métadonnées et des tailles de fichiers.",
-          solution: "Utilisation de Blotato comme passerelle d'abstraction pour normaliser l'envoi, couplée à une logique de formatage JSON dynamique en amont dans n8n."
+          problem: "Publier sur 9 plateformes (TikTok 9:16 vs LinkedIn/Threads) demande une gestion spécifique des métadonnées et des tailles de fichiers.",
+          solution: "Utilisation de Blotato ou autre logiciel comme passerelle d'abstraction pour normaliser l'envoi."
         },
         {
           problem: "Instabilité des APIs de téléchargement (RapidAPI/TikTok) qui échouent parfois sans raison apparente.",
@@ -1264,7 +1263,7 @@ pause >nul
       ],
       lessons: [
         { title: "Fiabilité", text: "Prévoir le pire cas (API down) vaut mieux que d’empiler les nœuds magiques." },
-        { title: "Créa", text: "Automatiser 80 % du bruit libère du temps pour le 20 % créatif réellement différenciant." }
+        { title: "Temps", text: "Automatiser 80 % du bruit libère du temps pour le 20 % créatif réellement différenciant." }
       ],
       github: "https://github.com/tonusername/n8n-tiktok-automation"
     },
@@ -1289,14 +1288,13 @@ pause >nul
         { type: "video", src: "", label: "Teaser 30s portes ouvertes", placeholder: true }
       ],
       demoIntro: "Site web avec différente pages, Buttons, image labes, la base du html, CSS, js",
-      context: "Support de communication temporelle : il doit être compris en moins de 20 secondes par un parent pressé tout en donnant les réponses aux questions récurrentes (horaires, filières, inscription).",
-      desc: `La navigation privilégie trois parcours : « Je découvre l’école », « Je connais déjà et je veux m’inscrire », « Je suis partenaire / presse ». Chaque parcours regroupe blocs autonomes (cartes, listes, encadrés) pour permettre des mises à jour par section sans casser le reste.\n\nLes zones visuelles héro utilisent un ratio fixe pour éviter les sauts de mise en page quand les photos réelles remplaceront les visuels placeholder. Les contrastes et tailles de cibles tactiles respectent une grille 8px pour rester confortables sur téléphone.\n\nUn module d’ancrage doux (scroll) et d’états actifs dans la barre latérale / menu mobile renforce la lisibilité lors d’une utilisation sur borne tactile en salle.`,
+      context: "Présentation d'un project pour les portes ouvertes du CEEF Pour montrer le travail fait au CEFF, faire envie aux jeunes de devenir apprenti en informatique. De travailler en groupe et de saméliorer.",
+      desc: ``,
       highlights: [
         'Hiérarchie typographique calibrée pour lecture à distance (titres > sous-titres > corps).',
-        'Composants réutilisables (carte filière, timeline journée, bandeau partenaires).',
         'Préparation SEO de base (titres page, meta description, OpenGraph à compléter).',
-        'Check-list accessibilité : focus visible, textes alternatifs, ordre de tabulation logique.',
-        'Mode maintenance documenté : comment désactiver temporairement l’inscription.'
+        'Un code claire et consentré pour comprendre les bases, meilleure facilité a expliquer le code.',
+        'Présentation live du project aux visiteurs.'
       ],
        demoLinks: [
 
@@ -1306,18 +1304,17 @@ pause >nul
       deliverables: [
         'Maquettes intégrées en HTML/CSS modulaire',
         'Fichier de configuration centralisé (dates, liens externes, mails)',
-        'Page plan du site + mentions légales prêtes à compléter',
-        'Guide « mise à jour 10 minutes » pour le secrétariat'
+        'Code claire pour mieux comprandre les base.',
       ],
       skillBars: [
-        { label: "Intégration HTML/CSS", pct: 86 },
+        { label: "Intégration HTML/CSS", pct: 96 },
         { label: "Responsive & grilles", pct: 80 },
-        { label: "JavaScript navigation", pct: 62 },
-        { label: "UX éditoriale", pct: 74 }
+        { label: "JavaScript ", pct: 12 },
+        { label: "Compétances sociales", pct: 100 }
       ],
       lessons: [
-        { title: "Stakeholders", text: "Un site scolaire vit par le contenu : prévoir des zones modifiables sans toucher au layout." },
-        { title: "Événement", text: "Afficher clairement la date/lieu au-dessus de la ligne de flottaison évite 80 % des mails répétitifs." }
+        { title: "Social", text: "Cette événement nécessite une approche sociale pour engager les participants." },
+        { title: "Événement", text: "Change de la norme et de noter zone de confor plus sur le terain" }
       ],
       problemPoints: [
         'Le type de fichier Gif ne s\'affiche pas correctement sur les différents navigateurs.'
@@ -1361,15 +1358,15 @@ pause >nul
       isWip: true,
       wipProgress: 82,
       metrics: [
-        { n: "3",   l: "Providers IA" },
+        { n: "+20",   l: "Providers IA" },
         { n: "24/7", l: "Agent actif" },
-        { n: "1",   l: "Allowlist Telegram" }
+        { n: "-",   l: "-" }
       ],
       media: [
         { type: "image", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80", label: "Dashboard / UI gateway" },
-        { type: "video", src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", label: "Vidéo démo (remplacez par votre enregistrement Telegram)" },
+        { type: "video", src: "", label: "Vidéo démo " },
         { type: "image", src: "", label: "Capture allowlist + logs", placeholder: true },
-        { type: "image", src: "video/openclm.png", label: "Telement de choix de model " }
+        { type: "image", src: "video/openclm.png", label: "Telement de choix de model + ajout de models " }
       ],
       challenges: [
         {
@@ -1391,8 +1388,8 @@ pause >nul
           solution: "JSON strict + <strong>allowlist ID Telegram</strong> pour filtrer toutes les entrées externes."
         }
       ],
-      context: "Passerelle IA locale ou quasi-locale : l’enjeu n’est pas seulement « brancher un modèle », mais rendre l’ensemble stable sur un poste Windows tout en profitant d’un runtime Linux pour certains services.",
-      desc: `OpenClaw est orchestré comme une petite plateforme : configuration des providers (Groq, OpenRouter, Google), transport Telegram, et règles de sécurité minimales mais non négociables. Le déploiement hybride Windows 11 + WSL2 Ubuntu a été motivé par des erreurs runtime impossibles à corriger proprement côté Windows seul (boucles de plugins Node, stack traces profondes).\n\nChaque incident a été traité comme un ticket d’infra : reproduction, isolation du service, correctif, preuve de non-régression. Le bridge localhost entre WSL et navigateur hôte a nécessité une cartographie des ports et une vérification des services systemd (redémarrage automatique, logs journalisés).\n\nLe bot Telegram n’accepte que les IDs présents dans une allowlist JSON strictement validée — toute autre origine est rejetée sans fuite d’information sur l’existence des routes. La roadmap restante couvre observabilité (métriques simples), sauvegardes de configuration et durcissement des secrets.`,
+      context: "Le but premier étais de experimenter une nouvelle technologie (OpenClaw), d'implémenter cette technologie dans d'autre Project et logiciel et d'avoir des agents customiser 100% Privée.",
+      desc: `OpenClaw est orchestré comme une petite plateforme : configuration des providers (Groq, OpenRouter, Google), transport Telegram, et règles de sécurité minimales mais non négociables. Le déploiement hybride Windows 11 + WSL2 Ubuntu a été motivé par des erreurs runtime impossibles à corriger proprement côté Windows seul (boucles de plugins Node, stack traces profondes).\n\n`,
       highlights: [
         'Architecture multi-provider : repli automatique possible si un endpoint quota-out.',
         'Journalisation structurée des requêtes entrantes (sans stocker le contenu sensible inutilement).',
@@ -1408,13 +1405,13 @@ pause >nul
       ],
       skillBars: [
         { label: "WSL2 & Linux service", pct: 84 },
-        { label: "Node / OpenClaw", pct: 78 },
+        { label: "Node / OpenClaw", pct: 100 },
         { label: "Réseau localhost / NAT", pct: 72 },
         { label: "Sécurité Telegram / JSON", pct: 80 }
       ],
       lessons: [
-        { title: "Hybride", text: "Savoir quand arrêter de « patcher Windows » et basculer sur Linux est une compétence d’ingénieur, pas une défaite." },
-        { title: "Surface d’attaque", text: "Un bot exposé mérite le même niveau de parano qu’une mini-API publique." }
+        { title: "Choix", text: "On a vraiment beacoup de libérter a choisir le model que l'on veut utiliser On peut meme utiliser des models local comme Ollama pour 100% de confidialité" },
+        { title: "Customisation", text: "On peut Intégrer un agent a telments de différant services ou plateformes On peut pérsonnaliser les réponses et le comportement selon les besoins spécifiques. (A-Z) " }
       ],
         problemPoints: [
     'Difficultée de conextion entre les diffrante platfomes',
